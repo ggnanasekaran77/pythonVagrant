@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+export ANSIBLE_HOME=/opt/app/ansible/python27
+export PYTHONUNBUFFERED=1
+export ANSIBLE_STDOUT_CALLBACK=debug
+export ANSIBLE_FORCE_COLOR=true
+export ANSIBLE_HOST_KEY_CHECKING=false
+export ANSIBLE_TIMEOUT=180
+export PATH=${ANSIBLE_HOME}/bin:${PATH}
+export PYTHON_LIBRARY=${ANSIBLE_HOME}/lib:${PYTHON_LIBRARY}
+export PYTHON_INCLUDE_DIR=${ANSIBLE_HOME}/include:${PYTHON_INCLUDE_DIR}
+export LD_LIBRARY_PATH=${ANSIBLE_HOME}/lib:${LD_LIBRARY_PATH}
+#export ANSIBLE_PRIVATE_KEY_FILE=.ssh/id_rsa
+export ANSIBLE_REMOTE_USER=gnanam
+export ANSIBLE_INVENTORY=inventory
+
+ansible-playbook main.yml
