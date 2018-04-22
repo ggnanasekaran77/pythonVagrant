@@ -1,0 +1,50 @@
+---
+- hosts: localhost
+  sudo: true
+  vars:
+    vagrant_root: "~/repo/{{git.reponame}}"
+    git:
+      user: ggnanasekaran77
+      reponame: pythonVagrant
+
+  tasks:
+
+    - name: Install Required Packages
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+      with_items:
+        - "virtualbox"
+        - "vagrant"
+        - "git"
+
+    - name: Creating Folder {{vagrant_root}}
+      file:
+        state: directory
+        path: "{{item}}"
+        mode: 0755
+      with_items:
+        - "{{vagrant_root}}"
+
+    - name: git checkout
+      git:
+        repo: "https://github.com/{{git.user}}/{{git.reponame}}"
+        dest: "{{vagrant_root}}"
+
+    - name: Running Shell Script
+      shell: "vagrant status|grep default|awk '{print $2}'"
+      args:
+        chdir: "{{vagrant_root}}"
+      ignore_errors: yes
+      register: vagrant_status
+
+    - name: Running Shell Script
+      shell: "vagrant up"
+      args:
+        chdir: "{{vagrant_root}}"
+      when: vagrant_status.stdout_lines != "running"
+
+
+
+
+

@@ -1,0 +1,48 @@
+---
+- hosts: localhost
+  sudo: true
+  vars:
+    app_root: /webapps/devops
+    git:
+      user: azneita
+      reponame: devops-challenge.git
+
+  tasks:
+
+    - name: Creating Folder {{app_root}}
+      file:
+        state: directory
+        path: "{{item}}"
+        mode: 0755
+      with_items:
+        - "{{app_root}}"
+
+    - name: Install Required Packages
+      apt:
+        name: "{{item}}"
+        update_cache: yes
+      with_items:
+        - "git"
+
+    - name: Checkout Repo {{git.reponame}}
+      git:
+        repo: "https://bitbucket.org/{{git.user}}/{{git.reponame}}"
+        dest: "{{app_root}}"
+
+    - name: download get-pip.py
+      get_url: url=https://bootstrap.pypa.io/get-pip.py dest=/tmp/get-pip.py
+
+    - name: install pip
+      command: python /tmp/get-pip.py
+
+    - name: install required PIPs
+      pip:
+        requirements: "{{app_root}}/requirements.txt"
+
+    - name: install gunicorn and flask
+      pip: name={{ item }}
+      with_items:
+      - gunicorn
+
+    - name: run server
+      command: gunicorn app:app -D -b 0.0.0.0:80 chdir="{{app_root}}"

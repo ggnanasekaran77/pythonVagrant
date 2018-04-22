@@ -10,8 +10,7 @@ export PATH=${ANSIBLE_HOME}/bin:${PATH}
 export PYTHON_LIBRARY=${ANSIBLE_HOME}/lib:${PYTHON_LIBRARY}
 export PYTHON_INCLUDE_DIR=${ANSIBLE_HOME}/include:${PYTHON_INCLUDE_DIR}
 export LD_LIBRARY_PATH=${ANSIBLE_HOME}/lib:${LD_LIBRARY_PATH}
-#export ANSIBLE_PRIVATE_KEY_FILE=.ssh/id_rsa
-export ANSIBLE_REMOTE_USER=gnanam
+export ANSIBLE_REMOTE_USER=user
 export ANSIBLE_INVENTORY=inventory
 
 ansible-playbook main.yml
